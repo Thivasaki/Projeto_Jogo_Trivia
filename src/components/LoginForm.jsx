@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
-import { addNameEmail } from '../redux/actions';
 
-class Login extends Component {
+export default class LoginForm extends Component {
   constructor(props) {
     super(props);
 
@@ -14,6 +12,12 @@ class Login extends Component {
       disableButton: true,
     };
   }
+
+  fetchToken = async () => {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const data = await response.json();
+    return data.token;
+  };
 
   handleChange = ({ target }) => {
     const { id, value } = target;
@@ -31,19 +35,16 @@ class Login extends Component {
     }
   };
 
-  handleSubmit = (event) => {
+  handleClick = async (event) => {
+    const { history } = this.props;
     event.preventDefault();
-    const { dispatch, history } = this.props;
-    const { name, email } = this.state;
-    dispatch(addNameEmail({
-      name,
-      email,
-    }));
-    history.push('/games');
+    const token = await this.fetchToken();
+    localStorage.setItem('token', token);
+    history.push('/game');
   };
 
-export default class Login extends Component {
   render() {
+    const { email, name, disableButton } = this.state;
     return (
 
       <div>
@@ -69,22 +70,18 @@ export default class Login extends Component {
             disabled={ disableButton }
             type="submit"
             data-testid="btn-play"
-            onClick={ this.handleSubmit }
+            onClick={ this.handleClick }
           >
             Play
 
           </button>
         </form>
       </div>
-      <LoginForm { ...this.props } />
-
     );
   }
 }
-
-Login.propTypes = {
-  dispatch: PropTypes.func,
-}.isRequired;
-
-export default connect()(Login);
-
+LoginForm.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
