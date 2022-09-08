@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
+import { addNameEmail } from '../redux/actions';
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
 
@@ -35,16 +37,35 @@ export default class LoginForm extends Component {
     }
   };
 
-  handleClick = async (event) => {
-    const { history } = this.props;
+  // handleClick = async (event) => {
+  //   const { history } = this.props;
+  //   event.preventDefault();
+  //   const token = await this.fetchToken();
+  //   localStorage.setItem('token', token);
+  //   history.push('/game');
+  // };
+
+  handleSubmit = async (event) => {
     event.preventDefault();
+    const { dispatch, history } = this.props;
+    const { name, email } = this.state;
     const token = await this.fetchToken();
     localStorage.setItem('token', token);
-    history.push('/game');
+    dispatch(addNameEmail({
+      name,
+      email,
+    }));
+    history.push('/games');
+  };
+
+  handleClick = () => {
+    const { history } = this.props;
+    history.push('/settings');
   };
 
   render() {
     const { email, name, disableButton } = this.state;
+    console.log(this.props);
     return (
 
       <div>
@@ -70,10 +91,17 @@ export default class LoginForm extends Component {
             disabled={ disableButton }
             type="submit"
             data-testid="btn-play"
-            onClick={ this.handleClick }
+            onClick={ this.handleSubmit }
           >
             Play
 
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.handleClick }
+          >
+            Settings
           </button>
         </form>
       </div>
@@ -83,5 +111,8 @@ export default class LoginForm extends Component {
 LoginForm.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
-  }).isRequired,
-};
+  }),
+  dispatch: PropTypes.func,
+}.isRequired;
+
+export default connect()(LoginForm);
