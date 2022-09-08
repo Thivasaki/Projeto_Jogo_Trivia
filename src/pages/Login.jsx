@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import logo from '../trivia.png';
+import { addNameEmail } from '../redux/actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -26,6 +29,17 @@ export default class Login extends Component {
     } else {
       this.setState({ disableButton: true });
     }
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { dispatch, history } = this.props;
+    const { name, email } = this.state;
+    dispatch(addNameEmail({
+      name,
+      email,
+    }));
+    history.push('/games');
   };
 
   render() {
@@ -55,6 +69,7 @@ export default class Login extends Component {
             disabled={ disableButton }
             type="submit"
             data-testid="btn-play"
+            onClick={ this.handleSubmit }
           >
             Play
 
@@ -64,3 +79,9 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  dispatch: PropTypes.func,
+}.isRequired;
+
+export default connect()(Login);
