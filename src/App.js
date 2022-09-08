@@ -7,11 +7,7 @@ export default function App() {
     <div className="App">
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
-<<<<<<< HEAD
-        <p>SUA VEZ, #VQV!</p>
-=======
         <p>SUA VEZ!!!!</p>
->>>>>>> 0ee44762c2e1a67b79cfc1ee152cc15f96b6cfba
       </header>
     </div>
   );
