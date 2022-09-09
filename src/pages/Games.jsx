@@ -5,17 +5,27 @@ import PropTypes from 'prop-types';
 import { requestAPIQuestions } from '../redux/actions';
 
 class Games extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      questionNumber: 0,
+    };
+  }
+
   async componentDidMount() {
-    const { dispatch, questions, history } = this.props;
+    const { dispatch } = this.props;
     const token = localStorage.getItem('token');
     await dispatch(requestAPIQuestions(token));
-    if (questions.results.length === Number('0')) {
-      history.push('/');
-    }
+    // if (questions.results.length === Number('0')) {
+    //   history.push('/');
+    // }
   }
 
   render() {
     const { email, name, questions } = this.props;
+    // const randomizer = Math.round(Math.random() * Number('4'));
+    const { questionNumber } = this.state;
     const hash = md5(email).toString();
     return (
       <div>
@@ -32,15 +42,34 @@ class Games extends Component {
             Score: 0
           </span>
         </header>
-        { questions.results !== undefined && questions.results.map((e) => (
-          <div key={ e.question }>
-            <span>{ e.question }</span>
-            <span>{ e.correct_answer }</span>
-            {e.incorrect_answers.map((ei) => (
-              <span key={ ei }>{ ei }</span>
-            ))}
-          </div>
-        ))}
+        { questions.results !== undefined && questions.results
+          .map((e) => (
+            <div key={ e.question }>
+              <span data-testid="question-category">{ e.category }</span>
+              <span data-testid="question-text">{ e.question }</span>
+              <section
+                data-testid="answer-options"
+              >
+                <button
+                  type="button"
+                  data-testid="correct-answer"
+                >
+                  { e.correct_answer }
+                </button>
+                {e.incorrect_answers
+                  .map((ei, i) => (
+                    <button
+                      type="button"
+                      key={ ei }
+                      data-testid={ `wrong-answer-${i}` }
+                    >
+                      { ei }
+
+                    </button>
+                  ))}
+              </section>
+            </div>
+          ))[questionNumber]}
       </div>
     );
   }
