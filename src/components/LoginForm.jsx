@@ -37,14 +37,6 @@ class LoginForm extends Component {
     }
   };
 
-  // handleClick = async (event) => {
-  //   const { history } = this.props;
-  //   event.preventDefault();
-  //   const token = await this.fetchToken();
-  //   localStorage.setItem('token', token);
-  //   history.push('/game');
-  // };
-
   handleSubmit = async (event) => {
     event.preventDefault();
     const { dispatch, history } = this.props;
@@ -65,7 +57,6 @@ class LoginForm extends Component {
 
   render() {
     const { email, name, disableButton } = this.state;
-    console.log(this.props);
     return (
 
       <div>
