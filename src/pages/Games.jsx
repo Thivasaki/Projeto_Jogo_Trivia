@@ -2,21 +2,61 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { requestAPIQuestions } from '../redux/actions';
+// import { requestAPIQuestions } from '../redux/actions';
 
 class Games extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      questionNumber: 0,
+    };
+  }
+
   async componentDidMount() {
-    const { dispatch, questions, history } = this.props;
-    const token = localStorage.getItem('token');
-    await dispatch(requestAPIQuestions(token));
-    if (questions.results.length === Number('0')) {
+    const { history, code } = this.props;
+    const invalidToken = 3;
+    if (code === invalidToken) {
+      localStorage.removeItem('token');
       history.push('/');
     }
   }
 
+  shuffleArray = (arr) => {
+    // Essa função foi baseada no exemplo dado no site hora de codar: https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
+    for (let i = arr.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+
   render() {
-    const { email, name, questions } = this.props;
+    const { email, name, gameInfo } = this.props;
+    const { questionNumber } = this.state;
     const hash = md5(email).toString();
+    let getEntries = [];
+    console.log(gameInfo);
+    if (gameInfo.length) {
+      const convertInfo = gameInfo.map((answer) => {
+        if (answer.incorrect_answers.length === 1) {
+          return ({
+            [answer.correct_answer]: true,
+            [answer.incorrect_answers]: false,
+          });
+        }
+        return ({
+          [answer.correct_answer]: true,
+          [answer.incorrect_answers[0]]: false,
+          [answer.incorrect_answers[1]]: false,
+          [answer.incorrect_answers[2]]: false,
+        });
+      })[questionNumber];
+      console.log(convertInfo);
+      getEntries = Object.entries(convertInfo);
+      console.log(getEntries);
+    }
+
     return (
       <div>
         <header>
@@ -32,15 +72,26 @@ class Games extends Component {
             Score: 0
           </span>
         </header>
-        { questions.results !== undefined && questions.results.map((e) => (
-          <div key={ e.question }>
-            <span>{ e.question }</span>
-            <span>{ e.correct_answer }</span>
-            {e.incorrect_answers.map((ei) => (
-              <span key={ ei }>{ ei }</span>
-            ))}
-          </div>
-        ))}
+        { gameInfo !== undefined && gameInfo
+          .map((e) => (
+            <div key={ e.question }>
+              <span data-testid="question-category">{ e.category }</span>
+              <span data-testid="question-text">{ e.question }</span>
+            </div>
+          ))[questionNumber]}
+        <section data-testid="answer-options">
+          {gameInfo
+            ? this.shuffleArray(getEntries).map((answer, index) => (
+              <button
+                type="button"
+                key={ index }
+                data-testid={ answer[1] === true
+                  ? 'correct-answer' : `wrong-answer-${index - 1}` }
+              >
+                {answer[0]}
+              </button>
+            )) : <h1>TESTE</h1>}
+        </section>
       </div>
     );
   }
@@ -49,13 +100,14 @@ class Games extends Component {
 const mapStateToProps = (state) => ({
   email: state.player.gravatarEmail,
   name: state.player.name,
-  questions: state.question.question,
+  gameInfo: state.question.results,
+  code: state.question.response_code,
 });
 
 Games.propTypes = {
   email: PropTypes.string,
   name: PropTypes.string,
-  questions: PropTypes.shape(PropTypes.string),
+  gameInfo: PropTypes.shape(PropTypes.string),
 }.isRequired;
 
 export default connect(mapStateToProps)(Games);

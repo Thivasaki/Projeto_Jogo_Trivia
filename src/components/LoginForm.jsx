@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
-import { addNameEmail } from '../redux/actions';
+import { addNameEmail, requestAPIQuestions } from '../redux/actions';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -47,6 +47,8 @@ class LoginForm extends Component {
       name,
       email,
     }));
+    const localStoreToken = localStorage.getItem('token');
+    await dispatch(requestAPIQuestions(localStoreToken));
     history.push('/games');
   };
 

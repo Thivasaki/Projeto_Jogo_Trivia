@@ -11,6 +11,6 @@ export const requestAPIQuestions = (token) => async (dispatch) => {
   const data = await response.json();
   dispatch({
     type: REQUEST_QUESTIONS,
-    payload: data,
+    data,
   });
 };

@@ -1,7 +1,8 @@
 import { REQUEST_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = {
-  question: {},
+  response_code: 0,
+  results: [],
 };
 
 const question = (state = INITIAL_STATE, action) => {
@@ -9,7 +10,8 @@ const question = (state = INITIAL_STATE, action) => {
   case REQUEST_QUESTIONS:
     return {
       ...state,
-      question: action.payload,
+      response_code: action.data.response_code,
+      results: action.data.results,
     };
   default:
     return state;
