@@ -90,7 +90,7 @@ class Games extends Component {
               >
                 {answer[0]}
               </button>
-            )) : <h1>TESTE</h1>}
+            )) : <h1>Carregando</h1>}
         </section>
       </div>
     );
