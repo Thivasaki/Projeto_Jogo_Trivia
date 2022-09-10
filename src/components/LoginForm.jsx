@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import logo from '../trivia.png';
-import { addNameEmail } from '../redux/actions';
+import { addNameEmail, requestAPIQuestions } from '../redux/actions';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -37,14 +37,6 @@ class LoginForm extends Component {
     }
   };
 
-  // handleClick = async (event) => {
-  //   const { history } = this.props;
-  //   event.preventDefault();
-  //   const token = await this.fetchToken();
-  //   localStorage.setItem('token', token);
-  //   history.push('/game');
-  // };
-
   handleSubmit = async (event) => {
     event.preventDefault();
     const { dispatch, history } = this.props;
@@ -55,6 +47,8 @@ class LoginForm extends Component {
       name,
       email,
     }));
+    const localStoreToken = localStorage.getItem('token');
+    await dispatch(requestAPIQuestions(localStoreToken));
     history.push('/games');
   };
 
@@ -65,7 +59,6 @@ class LoginForm extends Component {
 
   render() {
     const { email, name, disableButton } = this.state;
-    console.log(this.props);
     return (
 
       <div>

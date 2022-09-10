@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 
 };
 
-const playerReducer = (state = INITIAL_STATE, action) => {
+const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_NAME_EMAIL:
     return { ...state, name: action.payload.name, gravatarEmail: action.payload.email };
@@ -17,4 +17,4 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default playerReducer;
+export default player;
