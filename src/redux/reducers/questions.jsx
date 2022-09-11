@@ -1,8 +1,9 @@
-import { REQUEST_QUESTIONS } from '../actions';
+import { REQUEST_QUESTIONS, DISABLE_BUTTONS } from '../actions';
 
 const INITIAL_STATE = {
   response_code: 0,
   results: [],
+  questionsButtons: false,
 };
 
 const question = (state = INITIAL_STATE, action) => {
@@ -12,6 +13,12 @@ const question = (state = INITIAL_STATE, action) => {
       ...state,
       response_code: action.data.response_code,
       results: action.data.results,
+      questionsButtons: false,
+    };
+  case DISABLE_BUTTONS:
+    return {
+      ...state,
+      questionsButtons: action.payload,
     };
   default:
     return state;
