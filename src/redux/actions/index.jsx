@@ -1,6 +1,7 @@
 export const ADD_NAME_EMAIL = 'ADD_NAME_EMAIL';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const DISABLE_BUTTONS = 'DISABLE_BUTTONS';
+export const ANSWER_QUESTION = 'ANSWER_QUESTION';
 
 export const addNameEmail = (payload) => ({
   type: ADD_NAME_EMAIL,
@@ -18,6 +19,12 @@ export const requestAPIQuestions = (token) => async (dispatch) => {
 
 export const disableButtons = () => ({
   type: DISABLE_BUTTONS,
+  payload: true,
+
+});
+
+export const answerQuestion = () => ({
+  type: ANSWER_QUESTION,
   payload: true,
 
 });

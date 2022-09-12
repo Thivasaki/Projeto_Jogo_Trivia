@@ -3,6 +3,8 @@ import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
+import { answerQuestion } from '../redux/actions';
+import './Games.css';
 
 class Games extends Component {
   constructor(props) {
@@ -32,9 +34,14 @@ class Games extends Component {
     return arr;
   };
 
+  answerQuestion = (event) => {
+    event.preventDefault();
+    const { dispatch } = this.props;
+    dispatch(answerQuestion());
+  };
+
   render() {
-    const { email, name, gameInfo, disableButton } = this.props;
-    console.log(disableButton);
+    const { email, name, gameInfo, disableButton, isAnswered } = this.props;
     const { questionNumber } = this.state;
     const hash = md5(email).toString();
     let getEntries = [];
@@ -55,11 +62,11 @@ class Games extends Component {
         });
       })[questionNumber];
       getEntries = Object.entries(convertInfo);
+      console.log(convertInfo);
     }
-
     return (
       <div>
-        <header>
+        <header className="header">
           <img
             data-testid="header-profile-picture"
             src={ `https://www.gravatar.com/avatar/${hash}` }
@@ -88,6 +95,9 @@ class Games extends Component {
                 data-testid={ answer[1] === true
                   ? 'correct-answer' : `wrong-answer-${index - 1}` }
                 disabled={ disableButton }
+                className={ isAnswered && (answer[1]
+                  ? 'correct-answer' : 'incorrect-answer') }
+                onClick={ this.answerQuestion }
               >
                 {answer[0]}
               </button>
@@ -104,7 +114,8 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
   gameInfo: state.question.results,
   code: state.question.response_code,
-  disableButton: state.question.questionsButtons,
+  disableButton: state.question.disableButtons,
+  isAnswered: state.question.isAnswered,
 });
 
 Games.propTypes = {

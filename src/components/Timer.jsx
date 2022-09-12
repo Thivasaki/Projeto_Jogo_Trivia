@@ -30,6 +30,11 @@ class Timer extends Component {
     if (counter === 0) dispatch(disableButtons());
   }
 
+  componentWillUnmount() {
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
+  }
+
   render() {
     const { counter, intervalId } = this.state;
 

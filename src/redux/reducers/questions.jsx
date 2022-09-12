@@ -1,9 +1,10 @@
-import { REQUEST_QUESTIONS, DISABLE_BUTTONS } from '../actions';
+import { REQUEST_QUESTIONS, DISABLE_BUTTONS, ANSWER_QUESTION } from '../actions';
 
 const INITIAL_STATE = {
   response_code: 0,
   results: [],
-  questionsButtons: false,
+  disableButtons: false,
+  isAnswered: false,
 };
 
 const question = (state = INITIAL_STATE, action) => {
@@ -13,12 +14,18 @@ const question = (state = INITIAL_STATE, action) => {
       ...state,
       response_code: action.data.response_code,
       results: action.data.results,
-      questionsButtons: false,
+      disableButtons: false,
+      isAnswered: false,
     };
   case DISABLE_BUTTONS:
     return {
       ...state,
-      questionsButtons: action.payload,
+      disableButtons: action.payload,
+    };
+  case ANSWER_QUESTION:
+    return {
+      ...state,
+      isAnswered: true,
     };
   default:
     return state;
