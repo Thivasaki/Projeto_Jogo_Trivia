@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
 import { answerQuestion } from '../redux/actions';
 import './Games.css';
+import RankingButton from '../components/RankingButton';
 
 class Games extends Component {
   constructor(props) {
@@ -117,6 +118,7 @@ class Games extends Component {
             ))}
         </section>
         <Timer disableButton={ disableButton } />
+        <RankingButton />
         {finishQuestion === true && (
           <button
             type="button"
