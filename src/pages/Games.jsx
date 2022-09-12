@@ -12,6 +12,7 @@ class Games extends Component {
 
     this.state = {
       questionNumber: 0,
+      finishQuestion: false,
     };
   }
 
@@ -38,11 +39,23 @@ class Games extends Component {
     event.preventDefault();
     const { dispatch } = this.props;
     dispatch(answerQuestion());
+    this.setState({ finishQuestion: true });
+  };
+
+  nextQuestion = () => {
+    const { history } = this.props;
+    const { questionNumber } = this.state;
+    if (questionNumber === Number('4')) {
+      history.push('/feedback');
+    } else {
+      const nextQuestion = questionNumber + 1;
+      this.setState({ questionNumber: nextQuestion });
+    }
   };
 
   render() {
     const { email, name, gameInfo, disableButton, isAnswered } = this.props;
-    const { questionNumber } = this.state;
+    const { questionNumber, finishQuestion } = this.state;
     const hash = md5(email).toString();
     let getEntries = [];
 
@@ -104,6 +117,15 @@ class Games extends Component {
             ))}
         </section>
         <Timer disableButton={ disableButton } />
+        {finishQuestion === true && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+          >
+            Next
+          </button>
+        )}
       </div>
     );
   }
