@@ -2,6 +2,7 @@ export const ADD_NAME_EMAIL = 'ADD_NAME_EMAIL';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const DISABLE_BUTTONS = 'DISABLE_BUTTONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const GAME_OVER = 'GAME_OVER';
 
 export const addNameEmail = (payload) => ({
   type: ADD_NAME_EMAIL,
@@ -25,6 +26,12 @@ export const disableButtons = () => ({
 
 export const answerQuestion = () => ({
   type: ANSWER_QUESTION,
+  payload: true,
+
+});
+
+export const gameOver = () => ({
+  type: GAME_OVER,
   payload: true,
 
 });
