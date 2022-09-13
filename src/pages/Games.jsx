@@ -3,9 +3,10 @@ import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
-import { addPointsPlayer } from '../redux/actions';
+import { answerQuestion, gameOver, addPointsPlayer } from '../redux/actions';
 import './Games.css';
 import RankingButton from '../components/RankingButton';
+import PlayAgainButton from '../components/PlayAgainButton';
 
 class Games extends Component {
   constructor(props) {
@@ -41,9 +42,9 @@ class Games extends Component {
   validateAnswers = () => {
     const { gameInfo } = this.props;
     const { questionNumber } = this.state;
-    let getEntries = [];
-
-    if (gameInfo.length) {
+    
+      let getEntries = [];
+    if (gameInfo.length && isGameFinished === false) {
       const convertInfo = gameInfo.map((answer) => {
         if (answer.incorrect_answers.length === 1) {
           return ({
@@ -63,8 +64,8 @@ class Games extends Component {
     const a = this.shuffleArray(getEntries);
     this.setState({ questions: a });
   };
-
-  scoreQuestion = () => {
+  
+   scoreQuestion = () => {
     const { gameInfo, timer } = this.props;
     const { questionNumber } = this.state;
     const { difficulty } = gameInfo[questionNumber];
@@ -85,7 +86,7 @@ class Games extends Component {
     const score = Number('10') + (timer * difficultyMultiplyer);
     return score;
   };
-
+  
   answerQuestion = ({ target }) => {
     const { dispatch } = this.props;
     this.setState({ finishQuestion: true }, () => {
@@ -97,18 +98,24 @@ class Games extends Component {
   };
 
   nextQuestion = () => {
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
     const { questionNumber } = this.state;
+
     if (questionNumber === Number('4')) {
+      dispatch(gameOver());
+    }
+    if (questionNumber === Number('5')) {
       history.push('/feedback');
     } else {
       const nextQuestion = questionNumber + 1;
       this.setState({ questionNumber: nextQuestion }, this.validateAnswers);
     }
   };
-
+  
+    
   render() {
-    const { email, name, gameInfo, disableButton } = this.props;
+    const { email, name, gameInfo,
+      disableButton, isAnswered, isGameFinished } = this.props;
     const { questionNumber, finishQuestion, questions } = this.state;
     const hash = md5(email).toString();
     const correctAnswer = 'correct-answer';
@@ -135,8 +142,8 @@ class Games extends Component {
             </div>
           ))[questionNumber]}
         <section data-testid="answer-options">
-          {gameInfo
-            && questions.map((answer, index) => (
+          {isGameFinished === false
+            ? questions.map((answer, index) => (
               <button
                 type="button"
                 key={ index }
@@ -149,13 +156,14 @@ class Games extends Component {
               >
                 {answer[0]}
               </button>
-            ))}
+            )) : <h2>O JOGO ACABOU</h2>}
         </section>
         <Timer
           func={ (data) => finishQuestion && data() }
           disableButton={ disableButton }
         />
         <RankingButton />
+        <PlayAgainButton />
         {finishQuestion === true && (
           <button
             type="button"
@@ -177,6 +185,8 @@ const mapStateToProps = (state) => ({
   code: state.question.response_code,
   disableButton: state.question.disableButtons,
   timer: state.question.timer,
+  isAnswered: state.question.isAnswered,
+  isGameFinished: state.question.isGameFinished,
 });
 
 Games.propTypes = {

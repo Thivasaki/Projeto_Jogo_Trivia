@@ -4,6 +4,7 @@ export const DISABLE_BUTTONS = 'DISABLE_BUTTONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
 export const ADD_POINTS = 'ADD_POINTS';
 export const ADD_TIMER = 'ADD_TIMER';
+export const GAME_OVER = 'GAME_OVER';
 
 export const addNameEmail = (payload) => ({
   type: ADD_NAME_EMAIL,
@@ -34,4 +35,10 @@ export const addTimer = (timer) => ({
 export const addPointsPlayer = (score) => ({
   type: ADD_POINTS,
   payload: score,
+});
+
+export const gameOver = () => ({
+  type: GAME_OVER,
+  payload: true,
+
 });

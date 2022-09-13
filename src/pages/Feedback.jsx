@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 class Feedback extends Component {
   render() {
     const { assertions } = this.props;
+    console.log(assertions);
     const TRES = 3;
     return (
       <section>
