@@ -53,7 +53,7 @@ describe('Realiza os testes da página de Games', () => {
     userEvent.click(button)
     await waitFor(()=> {
       expect(screen.getByAltText('gravatar')).toBeInTheDocument();
-      expect(history.location.pathname).toBe('/games')
+      expect(history.location.pathname).toBe('/gams')
     })
   });
 });
