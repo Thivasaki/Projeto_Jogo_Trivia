@@ -3,7 +3,7 @@ import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
-import { addPointsPlayer } from '../redux/actions';
+import { addPointsPlayer, addAssertions } from '../redux/actions';
 import './Games.css';
 import RankingButton from '../components/RankingButton';
 import PlayAgainButton from '../components/PlayAgainButton';
@@ -92,6 +92,7 @@ class Games extends Component {
       if (target.className === 'correct-answer') {
         const score = this.scoreQuestion();
         dispatch(addPointsPlayer(score));
+        dispatch(addAssertions());
       }
     });
   };
