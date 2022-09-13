@@ -1,5 +1,4 @@
-import { REQUEST_QUESTIONS, DISABLE_BUTTONS,
-  ANSWER_QUESTION, GAME_OVER, ADD_TIMER } from '../actions';
+import { REQUEST_QUESTIONS, DISABLE_BUTTONS, ADD_TIMER } from '../actions';
 
 const INITIAL_STATE = {
   response_code: 0,
@@ -31,11 +30,11 @@ const question = (state = INITIAL_STATE, action) => {
       ...state,
       timer: action.payload,
     };
-  case GAME_OVER:
-    return {
-      ...state,
-      isGameFinished: true,
-    };
+  // case GAME_OVER:
+  //   return {
+  //     ...state,
+  //     isGameFinished: true,
+  //   };
   default:
     return state;
   }

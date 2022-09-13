@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import PlayAgainButton from '../components/PlayAgainButton';
+import RankingButton from '../components/RankingButton';
 
 class Feedback extends Component {
   render() {
@@ -12,6 +14,8 @@ class Feedback extends Component {
         <p data-testid="feedback-text">
           {assertions < TRES ? 'Could be better...' : 'Well Done!'}
         </p>
+        <PlayAgainButton />
+        <RankingButton />
       </section>
     );
   }
