@@ -11,7 +11,9 @@ const INITIAL_STATE = {
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ADD_NAME_EMAIL:
-    return { ...state, name: action.payload.name, gravatarEmail: action.payload.email };
+    return {
+      ...state, name: action.payload.name, gravatarEmail: action.payload.email, score: 0,
+    };
 
   case ADD_POINTS:
     return {
