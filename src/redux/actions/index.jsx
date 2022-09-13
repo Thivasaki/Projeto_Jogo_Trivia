@@ -2,6 +2,8 @@ export const ADD_NAME_EMAIL = 'ADD_NAME_EMAIL';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const DISABLE_BUTTONS = 'DISABLE_BUTTONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const ADD_POINTS = 'ADD_POINTS';
+export const ADD_TIMER = 'ADD_TIMER';
 
 export const addNameEmail = (payload) => ({
   type: ADD_NAME_EMAIL,
@@ -23,8 +25,13 @@ export const disableButtons = () => ({
 
 });
 
-export const answerQuestion = () => ({
-  type: ANSWER_QUESTION,
-  payload: true,
+export const addTimer = (timer) => ({
+  type: ADD_TIMER,
+  payload: timer,
 
+});
+
+export const addPointsPlayer = (score) => ({
+  type: ADD_POINTS,
+  payload: score,
 });

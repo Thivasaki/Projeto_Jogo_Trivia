@@ -1,10 +1,10 @@
-import { REQUEST_QUESTIONS, DISABLE_BUTTONS, ANSWER_QUESTION } from '../actions';
+import { REQUEST_QUESTIONS, DISABLE_BUTTONS, ADD_TIMER } from '../actions';
 
 const INITIAL_STATE = {
   response_code: 0,
   results: [],
   disableButtons: false,
-  isAnswered: false,
+  timer: 0,
 };
 
 const question = (state = INITIAL_STATE, action) => {
@@ -22,10 +22,10 @@ const question = (state = INITIAL_STATE, action) => {
       ...state,
       disableButtons: action.payload,
     };
-  case ANSWER_QUESTION:
+  case ADD_TIMER:
     return {
       ...state,
-      isAnswered: true,
+      timer: action.payload,
     };
   default:
     return state;

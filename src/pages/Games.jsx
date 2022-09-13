@@ -3,7 +3,7 @@ import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
-import { answerQuestion } from '../redux/actions';
+import { addPointsPlayer } from '../redux/actions';
 import './Games.css';
 import RankingButton from '../components/RankingButton';
 
@@ -14,6 +14,7 @@ class Games extends Component {
     this.state = {
       questionNumber: 0,
       finishQuestion: false,
+      questions: [],
     };
   }
 
@@ -25,6 +26,7 @@ class Games extends Component {
       localStorage.removeItem('token');
       history.push('/');
     }
+    this.validateAnswers();
   }
 
   shuffleArray = (arr) => {
@@ -36,28 +38,9 @@ class Games extends Component {
     return arr;
   };
 
-  answerQuestion = (event) => {
-    event.preventDefault();
-    const { dispatch } = this.props;
-    dispatch(answerQuestion());
-    this.setState({ finishQuestion: true });
-  };
-
-  nextQuestion = () => {
-    const { history } = this.props;
+  validateAnswers = () => {
+    const { gameInfo } = this.props;
     const { questionNumber } = this.state;
-    if (questionNumber === Number('4')) {
-      history.push('/feedback');
-    } else {
-      const nextQuestion = questionNumber + 1;
-      this.setState({ questionNumber: nextQuestion });
-    }
-  };
-
-  render() {
-    const { email, name, gameInfo, disableButton, isAnswered } = this.props;
-    const { questionNumber, finishQuestion } = this.state;
-    const hash = md5(email).toString();
     let getEntries = [];
 
     if (gameInfo.length) {
@@ -76,8 +59,59 @@ class Games extends Component {
         });
       })[questionNumber];
       getEntries = Object.entries(convertInfo);
-      console.log(convertInfo);
     }
+    const a = this.shuffleArray(getEntries);
+    this.setState({ questions: a });
+  };
+
+  scoreQuestion = () => {
+    const { gameInfo, timer } = this.props;
+    const { questionNumber } = this.state;
+    const { difficulty } = gameInfo[questionNumber];
+    let difficultyMultiplyer = 0;
+    switch (difficulty) {
+    case 'easy':
+      difficultyMultiplyer = 1;
+      break;
+    case 'medium':
+      difficultyMultiplyer = 2;
+      break;
+    case 'hard':
+      difficultyMultiplyer = Number('3');
+      break;
+    default:
+      difficultyMultiplyer = 0;
+    }
+    const score = Number('10') + (timer * difficultyMultiplyer);
+    return score;
+  };
+
+  answerQuestion = ({ target }) => {
+    const { dispatch } = this.props;
+    this.setState({ finishQuestion: true }, () => {
+      if (target.className === 'correct-answer') {
+        const score = this.scoreQuestion();
+        dispatch(addPointsPlayer(score));
+      }
+    });
+  };
+
+  nextQuestion = () => {
+    const { history } = this.props;
+    const { questionNumber } = this.state;
+    if (questionNumber === Number('4')) {
+      history.push('/feedback');
+    } else {
+      const nextQuestion = questionNumber + 1;
+      this.setState({ questionNumber: nextQuestion }, this.validateAnswers);
+    }
+  };
+
+  render() {
+    const { email, name, gameInfo, disableButton } = this.props;
+    const { questionNumber, finishQuestion, questions } = this.state;
+    const hash = md5(email).toString();
+    const correctAnswer = 'correct-answer';
     return (
       <div>
         <header className="header">
@@ -102,22 +136,25 @@ class Games extends Component {
           ))[questionNumber]}
         <section data-testid="answer-options">
           {gameInfo
-            && this.shuffleArray(getEntries).map((answer, index) => (
+            && questions.map((answer, index) => (
               <button
                 type="button"
                 key={ index }
                 data-testid={ answer[1] === true
-                  ? 'correct-answer' : `wrong-answer-${index - 1}` }
+                  ? correctAnswer : `wrong-answer-${index - 1}` }
                 disabled={ disableButton }
-                className={ isAnswered && (answer[1]
-                  ? 'correct-answer' : 'incorrect-answer') }
-                onClick={ this.answerQuestion }
+                className={ finishQuestion && (answer[1]
+                  ? correctAnswer : 'incorrect-answer') }
+                onClick={ (event) => this.answerQuestion(event) }
               >
                 {answer[0]}
               </button>
             ))}
         </section>
-        <Timer disableButton={ disableButton } />
+        <Timer
+          func={ (data) => finishQuestion && data() }
+          disableButton={ disableButton }
+        />
         <RankingButton />
         {finishQuestion === true && (
           <button
@@ -139,13 +176,14 @@ const mapStateToProps = (state) => ({
   gameInfo: state.question.results,
   code: state.question.response_code,
   disableButton: state.question.disableButtons,
-  isAnswered: state.question.isAnswered,
+  timer: state.question.timer,
 });
 
 Games.propTypes = {
   email: PropTypes.string,
   name: PropTypes.string,
   gameInfo: PropTypes.shape(PropTypes.string),
+  timer: PropTypes.number,
 }.isRequired;
 
 export default connect(mapStateToProps)(Games);
