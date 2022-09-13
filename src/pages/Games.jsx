@@ -97,13 +97,30 @@ class Games extends Component {
   };
 
   nextQuestion = () => {
-    const { history } = this.props;
+    const { history, name, score, email } = this.props;
     const { questionNumber } = this.state;
 
     // if (questionNumber === Number('4')) {
     //   dispatch(gameOver());
     // }
     if (questionNumber === Number('4')) {
+      const storage = JSON.parse(localStorage.getItem('ranking'));
+
+      if (storage) {
+        localStorage.setItem('ranking', JSON.stringify([...storage, {
+          name,
+          score,
+          picture: email,
+        }]));
+      } else {
+        localStorage.setItem('ranking', JSON.stringify([{
+          name,
+          score,
+          picture: email,
+        },
+        ]));
+      }
+
       history.push('/feedback');
     } else {
       const nextQuestion = questionNumber + 1;
@@ -185,6 +202,7 @@ const mapStateToProps = (state) => ({
   disableButton: state.question.disableButtons,
   timer: state.question.timer,
   isAnswered: state.question.isAnswered,
+  score: state.player.score,
 });
 
 Games.propTypes = {
