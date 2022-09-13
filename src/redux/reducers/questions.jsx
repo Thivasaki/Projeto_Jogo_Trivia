@@ -1,10 +1,12 @@
-import { REQUEST_QUESTIONS, DISABLE_BUTTONS, ANSWER_QUESTION } from '../actions';
+import { REQUEST_QUESTIONS, DISABLE_BUTTONS,
+  ANSWER_QUESTION, GAME_OVER } from '../actions';
 
 const INITIAL_STATE = {
   response_code: 0,
   results: [],
   disableButtons: false,
   isAnswered: false,
+  isGameFinished: false,
 };
 
 const question = (state = INITIAL_STATE, action) => {
@@ -16,6 +18,7 @@ const question = (state = INITIAL_STATE, action) => {
       results: action.data.results,
       disableButtons: false,
       isAnswered: false,
+      isGameFinished: false,
     };
   case DISABLE_BUTTONS:
     return {
@@ -26,6 +29,11 @@ const question = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isAnswered: true,
+    };
+  case GAME_OVER:
+    return {
+      ...state,
+      isGameFinished: true,
     };
   default:
     return state;
