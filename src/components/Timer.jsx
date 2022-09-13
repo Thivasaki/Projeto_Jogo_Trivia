@@ -8,7 +8,7 @@ class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 2,
+      counter: 30,
       intervalId: 0,
 
     };

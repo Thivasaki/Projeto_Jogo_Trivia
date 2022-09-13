@@ -37,8 +37,8 @@ export const addPointsPlayer = (score) => ({
   payload: score,
 });
 
-export const gameOver = () => ({
-  type: GAME_OVER,
-  payload: true,
+// export const gameOver = () => ({
+//   type: GAME_OVER,
+//   payload: true,
 
-});
+// });
