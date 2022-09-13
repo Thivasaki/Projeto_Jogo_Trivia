@@ -1,6 +1,8 @@
-import { screen } from "@testing-library/react";
+import { screen, wait, waitFor } from "@testing-library/react";
 import Games from "../pages/Games";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
+import App from '../App';
+import userEvent from "@testing-library/user-event";
 
 describe('Realiza os testes da página de Games', () => {
   test('Se tem uma imagem de gravatar', () => {
@@ -31,8 +33,27 @@ describe('Realiza os testes da página de Games', () => {
     const { history } = renderWithRouterAndRedux(<Games />,{},);
     expect(history.location.pathname).toBe('/')
   });
-  test('teste', () => {
-   renderWithRouterAndRedux(<Games />,{},);
 
+  test('Se o token é valido', async () => {
+    const { history }= renderWithRouterAndRedux(<App />,{
+      question: {
+        response_code: 0,
+      }
+    },);
+
+    const inputEmail = screen.getByTestId('input-gravatar-email');
+    expect(inputEmail).toBeInTheDocument();
+    const inputName = screen.getByTestId('input-player-name');
+    expect(inputName).toBeInTheDocument();
+    const button = screen.getByTestId('btn-play');
+    expect(button).toBeInTheDocument();
+
+    userEvent.type(inputEmail,'teste@teste.com');
+    userEvent.type(inputName,'Manoel Lima');
+    userEvent.click(button)
+    await waitFor(()=> {
+      expect(screen.getByAltText('gravatar')).toBeInTheDocument();
+      expect(history.location.pathname).toBe('/games')
+    })
   });
 });
