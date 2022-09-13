@@ -21,6 +21,8 @@ class Feedback extends Component {
         <p data-testid="feedback-text">
           {assertions < TRES ? 'Could be better...' : 'Well Done!'}
         </p>
+        <p data-testid="feedback-total-score">{ score }</p>
+        <p data-testid="feedback-total-question">{ assertions }</p>
         <PlayAgainButton />
         <RankingButton />
       </section>
