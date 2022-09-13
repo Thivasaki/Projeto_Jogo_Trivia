@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TimeIsOverMessage from './TimeIsOverMessage';
-import { disableButtons } from '../redux/actions';
+import { disableButtons, addTimer } from '../redux/actions';
 
 class Timer extends Component {
   constructor(props) {
@@ -35,15 +35,24 @@ class Timer extends Component {
     clearInterval(intervalId);
   }
 
+  stopTimer = () => {
+    const { intervalId, counter } = this.state;
+    const { dispatch } = this.props;
+    clearInterval(intervalId);
+    dispatch(addTimer(counter));
+  };
+
   render() {
     const { counter, intervalId } = this.state;
+    const { func } = this.props;
+    func(this.stopTimer);
 
     if (counter === 0) {
       clearInterval(intervalId);
     }
     return (
       <div>
-        {counter === 0 ? <TimeIsOverMessage /> : <h1>{counter}</h1> }
+        {counter === 0 ? <TimeIsOverMessage /> : <h1 id="timer">{counter}</h1> }
       </div>
     );
   }
@@ -51,5 +60,6 @@ class Timer extends Component {
 
 Timer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  func: PropTypes.func.isRequired,
 };
 export default connect()(Timer);

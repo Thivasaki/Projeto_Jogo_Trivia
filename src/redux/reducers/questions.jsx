@@ -1,10 +1,11 @@
 import { REQUEST_QUESTIONS, DISABLE_BUTTONS,
-  ANSWER_QUESTION, GAME_OVER } from '../actions';
+  ANSWER_QUESTION, GAME_OVER, ADD_TIMER } from '../actions';
 
 const INITIAL_STATE = {
   response_code: 0,
   results: [],
   disableButtons: false,
+  timer: 0,
   isAnswered: false,
   isGameFinished: false,
 };
@@ -25,10 +26,10 @@ const question = (state = INITIAL_STATE, action) => {
       ...state,
       disableButtons: action.payload,
     };
-  case ANSWER_QUESTION:
+  case ADD_TIMER:
     return {
       ...state,
-      isAnswered: true,
+      timer: action.payload,
     };
   case GAME_OVER:
     return {
