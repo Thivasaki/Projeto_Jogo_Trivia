@@ -42,13 +42,13 @@ class LoginForm extends Component {
     const { dispatch, history } = this.props;
     const { name, email } = this.state;
     const token = await this.fetchToken();
-    localStorage.setItem('token', JSON.stringify({ token }));
+    localStorage.setItem('token', token);
     dispatch(addNameEmail({
       name,
       email,
     }));
     const localStoreToken = localStorage.getItem('token');
-    await dispatch(requestAPIQuestions(JSON.parse(localStoreToken).token));
+    await dispatch(requestAPIQuestions(localStoreToken));
     history.push('/games');
   };
 
