@@ -1,4 +1,4 @@
-import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen, waitFor} from '@testing-library/react';
 import React from 'react';
 import App from '../App'
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
@@ -15,7 +15,7 @@ describe('Testando o componente Settings', () => {
 
     userEvent.type(inputEmail,'teste@teste.com');
     userEvent.type(inputName,'Manoel Lima');
-    userEvent.click(button)
+    userEvent.click(button);
 
     await waitFor(() => {
       expect(history.location.pathname).toBe('/games')
