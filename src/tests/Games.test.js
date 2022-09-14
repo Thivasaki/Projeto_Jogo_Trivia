@@ -37,7 +37,7 @@ describe('Realiza os testes da página de Games', () => {
   test('Se o token é valido', async () => {
     const { history }= renderWithRouterAndRedux(<App />,{
       question: {
-        response_code: 0,
+        response_code: 3,
       }
     },);
 
@@ -51,9 +51,15 @@ describe('Realiza os testes da página de Games', () => {
     userEvent.type(inputEmail,'teste@teste.com');
     userEvent.type(inputName,'Manoel Lima');
     userEvent.click(button)
+
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve(),
+    }))
+
+    expect(global.fetch).toBeCalledTimes(1);
     await waitFor(()=> {
       expect(screen.getByAltText('gravatar')).toBeInTheDocument();
-      expect(history.location.pathname).toBe('/gams')
+      expect(history.location.pathname).toBe('/')
     })
   });
 });
