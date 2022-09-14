@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import TimeIsOverMessage from './TimeIsOverMessage';
 import { disableButtons, addTimer } from '../redux/actions';
 
 class Timer extends Component {
@@ -52,7 +51,7 @@ class Timer extends Component {
     }
     return (
       <div>
-        {counter === 0 ? <TimeIsOverMessage /> : <h1 id="timer">{counter}</h1> }
+        {counter === 0 ? <h2>Time Is Over</h2> : <h1 data-testid="timer">{counter}</h1> }
       </div>
     );
   }

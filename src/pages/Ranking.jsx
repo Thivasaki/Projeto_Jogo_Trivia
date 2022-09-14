@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Ranking extends Component {
   constructor(props) {
@@ -20,22 +21,22 @@ class Ranking extends Component {
     });
   }
 
-  handleLogout = () => {
-    const { history } = this.props;
-    history.push('/');
-  };
+  // handleLogout = () => {
+  //   const { history } = this.props;
+  //   history.push('/');
+  // };
 
   render() {
     const { email } = this.props;
     const { ranking } = this.state;
     const hash = md5(email).toString();
-    console.log(ranking);
+
     return (
       <section>
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
-          {
-            ranking.sort((a, b) => b.score - a.score).map((player, index) => (
+          { ranking
+            && ranking.sort((a, b) => b.score - a.score).map((player, index) => (
               <li key={ index }>
                 <img
                   data-testid="header-profile-picture"
@@ -53,16 +54,16 @@ class Ranking extends Component {
                   {player.score}
                 </p>
               </li>
-            ))
-          }
+            ))}
         </ul>
-        <button
-          type="button"
-          data-testid="btn-go-home"
-          onClick={ this.handleLogout }
-        >
-          Logout
-        </button>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-go-home"
+          >
+            Logout
+          </button>
+        </Link>
       </section>
     );
   }
