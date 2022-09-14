@@ -70,9 +70,6 @@ class Games extends Component {
     const { difficulty } = gameInfo[questionNumber];
     let difficultyMultiplyer = 0;
     switch (difficulty) {
-    case 'easy':
-      difficultyMultiplyer = 1;
-      break;
     case 'medium':
       difficultyMultiplyer = 2;
       break;
@@ -80,7 +77,7 @@ class Games extends Component {
       difficultyMultiplyer = Number('3');
       break;
     default:
-      difficultyMultiplyer = 0;
+      difficultyMultiplyer = 1;
     }
     const score = Number('10') + (timer * difficultyMultiplyer);
     return score;

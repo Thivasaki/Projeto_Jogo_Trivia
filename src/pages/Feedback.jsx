@@ -9,7 +9,6 @@ class Feedback extends Component {
   render() {
     const { assertions, name, score, email } = this.props;
     const hash = md5(email).toString();
-    console.log(assertions);
     const TRES = 3;
     return (
       <section>
