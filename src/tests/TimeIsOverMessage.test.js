@@ -24,7 +24,7 @@ describe('Testando o componente Settings', () => {
       setInterval(() => {
         expect(screen.getByRole('heading', {level: 2, name: 'Time Is Over'})).toBeInTheDocument()
       }, 31000)
-    }, {timeout: 2000})
+    }, {timeout: 2000});
 
     
   })
