@@ -1,5 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
-import Games from "../pages/Games";
+import Games from "../pages/Game";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 import App from '../App';
 import userEvent from "@testing-library/user-event";
@@ -79,7 +79,7 @@ describe('Realiza os testes da página de Games', () => {
     const { history } = renderWithRouterAndRedux(<Games />,{},);
     expect(history.location.pathname).toBe('/')
   });
-  
+
   jest.setTimeout(50000)
   test('Verifica se os botoes das perguntas sao desabilitados apos 30 segundos ou o texto Time Is Over aparece', async () => {
 
