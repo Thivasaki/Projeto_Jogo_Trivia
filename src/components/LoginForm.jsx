@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import logo from '../trivia.png';
+import logo from '../pages/LoginAssets/LogoTrivia.svg';
 import { addNameEmail, requestAPIQuestions } from '../redux/actions';
 
 class LoginForm extends Component {
@@ -62,40 +62,49 @@ class LoginForm extends Component {
     return (
 
       <div>
-        <img src={ logo } className="App-logo" alt="logo" />
+        <img src={ logo } className="Logo_Trivia_Login" alt="logo" />
         <form>
-          <input
-            id="name"
-            value={ name }
-            type="text"
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-            autoComplete="off"
-          />
-          <input
-            id="email"
-            value={ email }
-            type="email"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-            autoComplete="off"
-          />
-          <button
-            disabled={ disableButton }
-            type="submit"
-            data-testid="btn-play"
-            onClick={ this.handleSubmit }
-          >
-            Play
+          <div className="Box_Branco">{}</div>
+          <div className="Forms_Inputs">
+            <input
+              id="name"
+              value={ name }
+              type="text"
+              placeholder="What is your name?"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+              autoComplete="off"
+            />
+            <input
+              id="email"
+              value={ email }
+              type="email"
+              placeholder="What is your email?"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+              autoComplete="off"
+            />
+          </div>
+          <div className="Buttons_Display">
+            <button
+              disabled={ disableButton }
+              className="Button"
+              type="submit"
+              data-testid="btn-play"
+              onClick={ this.handleSubmit }
+            >
+              PLAY
 
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ this.handleClick }
-          >
-            Settings
-          </button>
+            </button>
+            <button
+              className="Button"
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.handleClick }
+            >
+              SETTINGS
+            </button>
+          </div>
         </form>
       </div>
     );

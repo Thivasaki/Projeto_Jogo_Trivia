@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Timer from '../components/Timer';
 import { addPointsPlayer, addAssertions } from '../redux/actions';
 import './Games.css';
+import logo from './LoginAssets/LogoTrivia.svg';
 import RankingButton from '../components/RankingButton';
 import PlayAgainButton from '../components/PlayAgainButton';
 
@@ -70,9 +71,6 @@ class Games extends Component {
     const { difficulty } = gameInfo[questionNumber];
     let difficultyMultiplyer = 0;
     switch (difficulty) {
-    case 'easy':
-      difficultyMultiplyer = 1;
-      break;
     case 'medium':
       difficultyMultiplyer = 2;
       break;
@@ -80,7 +78,7 @@ class Games extends Component {
       difficultyMultiplyer = Number('3');
       break;
     default:
-      difficultyMultiplyer = 0;
+      difficultyMultiplyer = 1;
     }
     const score = Number('10') + (timer * difficultyMultiplyer);
     return score;
@@ -101,9 +99,6 @@ class Games extends Component {
     const { history, name, score, email } = this.props;
     const { questionNumber } = this.state;
 
-    // if (questionNumber === Number('4')) {
-    //   dispatch(gameOver());
-    // }
     if (questionNumber === Number('4')) {
       const storage = JSON.parse(localStorage.getItem('ranking'));
 
@@ -136,17 +131,26 @@ class Games extends Component {
     const hash = md5(email).toString();
     const correctAnswer = 'correct-answer';
     return (
-      <div>
+      <>
+        <img src={ logo } className="Logo_Trivia_Game" alt="logo" />
+        <div className="Header_Box_Branco">{}</div>
         <header className="header">
           <img
             data-testid="header-profile-picture"
             src={ `https://www.gravatar.com/avatar/${hash}` }
             alt="gravatar"
+            className="Imagem_Perfil_Gravatar"
           />
-          <span data-testid="header-player-name">
+          <span
+            data-testid="header-player-name"
+            className="Nome_Perfil_Gravatar"
+          >
             { name }
           </span>
-          <span data-testid="header-score">
+          <span
+            data-testid="header-score"
+            className="Pontução"
+          >
             Score: 0
           </span>
         </header>
@@ -190,7 +194,7 @@ class Games extends Component {
             Next
           </button>
         )}
-      </div>
+      </>
     );
   }
 }

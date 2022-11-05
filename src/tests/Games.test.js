@@ -96,10 +96,8 @@ describe('Realiza os testes da página de Games', () => {
   }, "/games");
   await waitFor(() => {
     expect(screen.getByTestId('timer')).toBeInTheDocument()
-    // expect(screen.getByTestId('correct-answer')).toBeEnabled()
   }); 
   await new Promise((interval) => setTimeout(interval, 32000));
-  // expect(screen.getByTestId('correct-answer')).toBeDisabled()
   expect(screen.getByRole('heading', {level: 2, name: "Time Is Over"})).toBeInTheDocument();
 
   });
